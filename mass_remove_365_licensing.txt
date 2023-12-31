@@ -1,0 +1,12 @@
+## This script will import a CSV with UserPrincipalName defined and remove licensing equal to the variable declaration.
+
+## You must first import the MS Graph module and connect via connect-mggraph.
+
+$users = import-csv -path "C:\temp\NICHQ_DefenderLicensedUsers.csv"
+$license = Get-MgSubscribedSku -All | Where SkuPartNumber -eq 'INSERT_LICENSE_SKUID_HERE'
+
+foreach($user in $users){
+
+Set-MgUserLicense -UserId $user.UserPrincipalName -RemoveLicenses @($license.SkuID) -AddLicenses @{}
+
+}
